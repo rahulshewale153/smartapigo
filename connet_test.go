@@ -21,7 +21,7 @@ func TestNewClient(t *testing.T) {
 	clientcode := "test"
 	password := "test@444"
 	apiKey := "test_key"
-	client := New(clientcode,password,apiKey)
+	client := New(clientcode, password, apiKey)
 
 	if client.password != password || client.clientCode != clientcode {
 		t.Errorf("Credentials not assigned properly.")
@@ -35,7 +35,7 @@ func TestClientSetters(t *testing.T) {
 	clientcode := "test"
 	password := "test@444"
 	apiKey := "test_key"
-	client := New(clientcode,password,apiKey)
+	client := New(clientcode, password, apiKey)
 
 	customDebug := true
 	customBaseURI := "test"
@@ -127,7 +127,7 @@ var MockResponders = [][]string{
 	[]string{http.MethodPost, URIUserProfile, "profile.json"},
 	[]string{http.MethodPost, URILogout, "logout.json"},
 	[]string{http.MethodPost, URIConvertPosition, "position_conversion.json"},
-
+	[]string{http.MethodPost, URIHISTORYDATA, "historicaldata.json"},
 }
 
 // Test only function prefix with this
@@ -144,7 +144,7 @@ func (ts *TestSuite) SetupAPITestSuit() {
 	clientcode := "test"
 	password := "test@444"
 	apiKey := "test_key"
-	ts.TestConnect = New(clientcode,password,apiKey)
+	ts.TestConnect = New(clientcode, password, apiKey)
 	httpmock.ActivateNonDefault(ts.TestConnect.httpClient.GetClient().client)
 
 	for _, v := range MockResponders {
@@ -214,4 +214,3 @@ func TestAPIMethods(t *testing.T) {
 	s := &TestSuite{}
 	RunAPITests(t, s)
 }
-
