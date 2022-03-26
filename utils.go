@@ -5,6 +5,7 @@ import (
 	"io/ioutil"
 	"net"
 	"net/http"
+	"os"
 	"reflect"
 	"strings"
 	"time"
@@ -105,16 +106,17 @@ func getIpAndMac() (string, string, string, error) {
 
 	// extract the hardware information base on the interface name
 	// capture above
-	netInterface, err := net.InterfaceByName(currentNetworkHardwareName)
+	_, err = net.InterfaceByName(currentNetworkHardwareName)
 
 	if err != nil {
 		return "", "", "", err
 	}
 
-	macAddress := netInterface.HardwareAddr
+	macAddress := os.Getenv("MACADDRESS")
+	//macAddress := netInterface.HardwareAddr
 
 	// verify if the MAC address can be parsed properly
-	_, err = net.ParseMAC(macAddress.String())
+	_, err = net.ParseMAC(macAddress)
 
 	if err != nil {
 		return "", "", "", err
@@ -125,7 +127,7 @@ func getIpAndMac() (string, string, string, error) {
 		return "", "", "", err
 	}
 
-	return localIp, publicIp, macAddress.String(), nil
+	return localIp, publicIp, macAddress, nil
 
 }
 
